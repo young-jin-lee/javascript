@@ -21,10 +21,10 @@ class UserStorage{
             }, 2000);
         })
     }
-    getRoles(user){
+    getRoles(userId){
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                if (user === 'david'){
+                if (userId === 'david'){
                     resolve({name: 'david', role: 'admin'});
                 }else{
                     reject(new Error('no access'));
@@ -39,6 +39,6 @@ const id = prompt('enter your id');
 const password = prompt('enter your password');
 
 userStorage.loginUser(id, password)
-    .then(user => userStorage.getRoles)
-    .then(user => alert(`Hello ${user.name}, you have the ${user.role} role`))
+    .then((userId) => userStorage.getRoles)
+    .then((user) => alert(`Hello ${user.name}, you have the ${user.role} role`))
     .catch(console.log);

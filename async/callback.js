@@ -1,11 +1,9 @@
 'use strict';
 
-// JS is synchoronous.
-// Execute the code block in order after hoisting.
+// JS is synchoronous which means it executes the code block in order(from top to bottom) after hoisting.
 // hoisting: var, function declaration.
 
-
-// 1. Synchoronous: executes from top 
+// 1. Synchoronous
 console.log('1');
 console.log('2');
 console.log('3');
@@ -13,7 +11,7 @@ console.log('3');
 // 2. Asynchoronous
 // setTimeout 함수의 파라미터로 내가 만든 함수를 넘겨준다. 브라우저가 1초 후에 이 함수를 호출(call)하도록 요청하는것. -> callback
 console.log('1');
-setTimeout(() => console.log('2')) // *** This requests the browser to call this function after 1 second and does not wait for the response from the browser.
+setTimeout(() => console.log('2')); // *** This requests the browser to call this function after 1 second and does not wait for the response from the browser.
 console.log('3');
 
 // When to use callback?
@@ -38,18 +36,19 @@ printWithDelay(() => console.log('async callback'), 2000);
 // 4. get david's role from the server with his id.
 // 5. if the logged in user is david, return his role info 
 class UserStorage{
-    loginUser(id, password, onSuccess, onError){
-        setTimeout(()=>{
+    checkLoginUser(id, password, onSuccess, onError){
+        setTimeout(() => {
             if(
                 (id === 'david' && password === '123') ||
                 (id === 'coder' && password === '456')
             ) {
                 onSuccess(id);
-            } else{
+            }else{
                 onError(new Error('not found'));
             }
         }, 2000);
     }
+
     getRoles(user, onSuccess, onError){
         setTimeout(()=>{
             if(user==='david'){
@@ -64,18 +63,18 @@ class UserStorage{
 const userStorage = new UserStorage();
 const id = prompt('enter your id');
 const password = prompt('enter your password');
-userStorage.loginUser(
+userStorage.checkLoginUser(
     id, 
     password, 
-    user =>{
+    (user) => { // here user means id of onSuccess
         userStorage.getRoles(
             user, 
-            userWithRole=>{
+            (userWithRole)=>{
                 alert(`Hello ${userWithRole.name}, you have the ${userWithRole.role} role`)
             }, 
-            (error=>{
+            (error)=>{
                 console.log(error)
-            })
+            }
         );
     }, 
     (error) =>{

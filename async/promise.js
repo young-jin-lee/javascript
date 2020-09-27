@@ -1,12 +1,11 @@
 'use strict';
 
 // Promise: a JS object for asynchoronous operations(more useful than callback functions)
-// keywords for using Promise:
+// Keywords for using Promise:
 // 1. State(pending) vs State(fulfilled or rejected)
 // 2. data Producer(P) vs data Consumer(C)
 
 // 1. Producer
-
 /**
      * Creates a new Promise.
      * @param executor A callback(executor) used to initialize the promise. This callback is passed two arguments:
@@ -15,7 +14,7 @@
      */
     //new <T>(executor: (resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
 
-// note: keep in mind that the executor runs automatically when new Promise is created.
+// *NOTE: Keep in mind that the executor runs automatically when new Promise is created.
 const promise = new Promise((resolve, reject) => {
     // do some heavy work(network, reading files, etc)
     console.log('doing something...');
@@ -30,7 +29,7 @@ promise
     .then((value) => {
     console.log(value);
     })
-    .catch(error => {
+    .catch((error) => {
         console.log(error);
     })
     .finally(() => {
@@ -38,8 +37,8 @@ promise
     })
 
 // 3. Promise chaining
-const fetchNumber = new Promise((resolver, reject) =>{
-    setTimeout(()=> resolve(1), 1000);
+const fetchNumber = new Promise((resolve, reject) =>{
+    setTimeout(() => resolve(1), 1000);
 })
 
 fetchNumber
@@ -50,19 +49,19 @@ fetchNumber
             setTimeout(()=>resolve(num-1), 1000);
         });
     })
-    .then(num => console.log(num));
+    .then(num => console.log(num)); // output: 5
 
 // 4. Error Handling
 // Suppose you get hen, egg, and cooked egg from the server
 const getHen = () =>
     new Promise((resolve, reject) => {
-        setTimeout(() => resolve('🐔'),1000);
+        setTimeout(() => resolve('🐔'), 1000);
     });
-const getEgg = hen =>
+const getEgg = (hen) =>
     new Promise((resolve, reject) => {
         setTimeout(()=> resolve(`${hen}=>🥚`),1000);
     });
-const cook = egg =>
+const cook = (egg) =>
     new Promise((resolve, reject) => {
         setTimeout(() => resolve(`${egg} => 🍜`),1000);
     });
@@ -79,24 +78,24 @@ getHen()
     .then(console.log);
 
 // If there has been an error from getting data from the server,
-const getHen = () =>
+const getHen2 = () =>
     new Promise((resolve, reject) => {
         setTimeout(() => resolve('🐔'),1000);
     });
-const getEgg = hen =>
+const getEgg2 = hen =>
     new Promise((resolve, reject) => {
         setTimeout(()=> reject(new Error(`error getting the egg! ${hen}=>🥚`)),1000);
     });
-const cook = egg =>
+const cook2 = egg =>
     new Promise((resolve, reject) => {
         setTimeout(() => resolve(`${egg} => 🍜`),1000);
     });
 
-getHen()
-    .then(getEgg)
+getHen2()
+    .then(getEgg2)
     .catch(error => { // 달걀을 못가지고 온 경우, 햄버거로 빵꾸처리
         return '🍔';
     })
-    .then(cook)
+    .then(cook2)
     .then(console.log)
     .catch(console.log);

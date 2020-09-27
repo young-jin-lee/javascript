@@ -20,6 +20,7 @@ function fetchUser() {
         return 'david';
     })
 }
+console.clear();
 const user = fetchUser();
 console.log(user);
 
@@ -31,11 +32,12 @@ function fetchUser() {
         resolve('david');
     })
 }
+
 const user = fetchUser();
 user.then(console.log);
 console.log(user);
 
-// 2. Async: a syntatic sugar that makes the Promise code simpler.
+// 2. Async: a syntatic sugar that makes the Promise code modern and simpler.
 // - add async in front of the function and remove 'return new Promise...' portion
 // - async automatically converts the code block into Promise.
 async function fetchUser() {
@@ -47,20 +49,29 @@ const user = fetchUser();
 user.then(console.log);
 console.log(user);
 
-// 3. await: only usable where async is attached to the function
+// 3. await: waits until the function to the right is done. only usable where async is attached to the function
+// function delay(ms){
+//     return new Promise((resolve, reject) => setTimeout(() => resolve(), ms)); // return Promise that calls resolve after ms
+// }
+
 function delay(ms){
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return setTimeout(() => resolve(), ms); // return Promise that calls resolve after ms
 }
 
-async function getApple(){ // This returns '🍎' after 3000 ms
+async function delay(ms){
+    return setTimeout(() => ms); // return Promise that calls resolve after ms
+}
+
+async function getApple(){ // This returns '🍎' after 1000 ms
     await delay(1000); 
     return '🍎';
 }
 
-async function getBanana(){ // This returns '🍌' after 3000 ms
+async function getBanana(){ // This returns '🍌' after 1000 ms
     return delay(1000)
-    .then(()=> '🍌') // chaining
+    .then(()=> '🍌'); // chaining
     // or
+    await delay(1000); 
     return '🍌'; // this is simpler. looks like synchronous
 }
 
@@ -76,7 +87,7 @@ pickFruits().then(console.log);
 // Simpler
 async function pickFruits() { // this takes 2 seconds
     const apple = await getApple();
-    const banan = await getBanana();
+    const banana = await getBanana();
     return `${apple} + ${banana}`
 }
 pickFruits().then(console.log);
@@ -86,12 +97,11 @@ pickFruits().then(console.log);
 async function pickFruits() { // this takes 1 second
     const applePromise = getApple(); // remember that the executor runs automatically when new Promise is created.
     const bananaPromise = getBanana(); // same as. the executor runs immediately.
-    const apple = await applePromise();
-    const banana = await bananaPromise();
+    const apple = await applePromise;
+    const banana = await bananaPromise;
     return `${apple} + ${banana}`
 }
 pickFruits().then(console.log);
-
 
 // parallel 2: using all() api
 function pickAllFruits() {
@@ -99,7 +109,7 @@ function pickAllFruits() {
     .then(fruits => fruits.join(' + ')
     );
 }
-prickAllFruits().then(console.log);
+pickAllFruits().then(console.log);
 
 // extra: picking only one
 function pickOnlyOne() {
